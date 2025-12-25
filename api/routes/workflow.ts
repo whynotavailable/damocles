@@ -1,9 +1,7 @@
-import express from 'express';
+import { addRoute } from './router';
 
-const router = express.Router();
-
-router.get('/', (_, res) => {
-  res.send('hi');
+addRoute('workflow-get', async (body, res) => {
+  res.json({
+    name: 'dave',
+  });
 });
-
-export default router;

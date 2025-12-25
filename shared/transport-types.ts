@@ -1,10 +1,10 @@
-// These types are important as they are used for the UI as well.
+// These types are used for API requests.
 
 import z from 'zod';
 
 // May use this, may not. Doesn't really matter.
 export const rpcRequest = z.object({
-  kind: z.string(),
+  key: z.string(),
   body: z.unknown(),
 });
 
