@@ -15,6 +15,7 @@ export default defineConfig([
   stylistic.configs.recommended,
   {
     rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/member-delimiter-style': ['error', {
         multiline: {
