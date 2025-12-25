@@ -1,6 +1,13 @@
 import z from 'zod';
 
-export const wokflowStep = z.object({});
+export const workflowStep = z.object({
+  name: z.optional(z.string()),
+  uses: z.optional(z.string()),
+  run: z.optional(z.string()),
+  with: z.optional(z.record(z.string(), z.string())),
+});
+
+export type WorkflowStep = z.infer<typeof workflowStep>;
 
 export const workflowJob = z.object({
   jobName: z.string(),
@@ -9,7 +16,7 @@ export const workflowJob = z.object({
     z.string(),
     z.array(z.string()),
   ])),
-  steps: z.array(wokflowStep),
+  steps: z.array(workflowStep),
 });
 
 export type WorkflowJob = z.infer<typeof workflowJob>;
