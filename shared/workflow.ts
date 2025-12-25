@@ -1,6 +1,7 @@
 import yaml from 'yaml';
+import { workflow, type Workflow } from './workflow-types';
 
-export function workflowToJson(yamlDoc: string): string | null {
+export function workflowToJson(yamlDoc: string): Workflow | string {
   const doc = yaml.parseDocument(yamlDoc);
   const jobs = doc.getIn(['jobs'], true);
 
@@ -15,12 +16,14 @@ export function workflowToJson(yamlDoc: string): string | null {
       newJobList.push(newObj);
     }
   }
-  else {
-    // YAML isn't in the right format
-    return null;
-  }
 
   doc.setIn(['jobs'], doc.createNode(newJobList));
 
-  return JSON.stringify(doc.toJSON());
+  const parsedDocument = workflow.safeParse(doc.toJSON());
+
+  if (parsedDocument.success === true) {
+    return parsedDocument.data!;
+  }
+
+  return parsedDocument.error.message;
 }
