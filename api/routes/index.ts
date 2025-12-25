@@ -13,9 +13,7 @@ export default function (express: express.Express) {
     const parsedBody = rpcRequest.safeParse(req.body);
 
     if (parsedBody.success === false) {
-      res
-        .status(400)
-        .json(parsedBody.error);
+      res.status(400).json(parsedBody.error);
       return;
     }
 

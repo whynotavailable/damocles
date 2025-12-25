@@ -18,17 +18,20 @@ export default defineConfig([
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@stylistic/semi': ['error', 'always'],
-      '@stylistic/member-delimiter-style': ['error', {
-        multiline: {
-          delimiter: 'semi',
-          requireLast: true,
+      '@stylistic/member-delimiter-style': [
+        'error',
+        {
+          multiline: {
+            delimiter: 'semi',
+            requireLast: true,
+          },
+          singleline: {
+            delimiter: 'semi',
+            requireLast: true,
+          },
+          multilineDetection: 'brackets',
         },
-        singleline: {
-          delimiter: 'semi',
-          requireLast: true,
-        },
-        multilineDetection: 'brackets',
-      }],
+      ],
     },
   },
 ]);

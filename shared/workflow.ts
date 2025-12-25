@@ -10,7 +10,7 @@ export function workflowToJson(yamlDoc: string): Workflow | string {
   if (yaml.isMap<yaml.Scalar, yaml.YAMLMap>(jobs)) {
     for (const job of jobs.items) {
       const newObj = {
-        ...(job.value?.toJSON()),
+        ...job.value?.toJSON(),
         jobName: job.key.value,
       };
       newJobList.push(newObj);
