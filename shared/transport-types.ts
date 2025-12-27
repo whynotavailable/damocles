@@ -18,3 +18,11 @@ export const helloRequest = z.object({
 });
 
 export type HelloRequest = z.infer<typeof helloRequest>;
+
+export const getActionManifestRequest = z.object({
+  org: z.string(),
+  repo: z.string(),
+  path: z.optional(z.string()),
+  ref: z.string(),
+  isWorkflow: z.boolean(),
+});
