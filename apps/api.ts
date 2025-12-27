@@ -2,7 +2,7 @@
 
 import express from 'express';
 import routes from '../api/routes';
-import { ParseError } from '../shared/errors';
+import { HandledError } from '../shared/errors';
 
 const app = express();
 
@@ -12,11 +12,22 @@ const port = 3101;
 
 routes(app);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.use((err: any, _req: any, res: any, next: any) => {
-  if (err instanceof ParseError) {
-    res.status(400).json(err.err.issues);
-    return;
+app.use((err: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (err) {
+    if (err instanceof HandledError) {
+      // Send something if nothing's been sent, though that'll count as a server error.
+      console.error('HandledError sent but something\'s already been sent.');
+      if (res.headersSent) {
+        res.status(500).send(err.message);
+      }
+      return;
+    }
+    else if (err instanceof Error) {
+      res.status(500).send(err.message);
+    }
+    else {
+      res.status(500).send('Error');
+    }
   }
 
   next();

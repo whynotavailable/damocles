@@ -5,3 +5,5 @@ export class ParseError {
 
   }
 }
+
+export class HandledError extends Error { }
