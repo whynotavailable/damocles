@@ -1,13 +1,3 @@
-import type z from 'zod';
-
-export class ParseError {
-  constructor(public err: z.ZodError<unknown>) {
-
-  }
-}
-
-export class HandledError extends Error { }
-
 export type httpStatus = 'not_found' | 'bad_request';
 
 const statusMap: Record<httpStatus, number> = {
