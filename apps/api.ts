@@ -2,7 +2,7 @@
 
 import express from 'express';
 import routes from '../api/routes';
-import { HandledError } from '../shared/errors';
+import { HttpError } from '../shared/errors';
 
 const app = express();
 
@@ -14,19 +14,22 @@ routes(app);
 
 app.use((err: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (err) {
-    if (err instanceof HandledError) {
-      // Send something if nothing's been sent, though that'll count as a server error.
-      console.error('HandledError sent but something\'s already been sent.');
-      if (res.headersSent) {
-        res.status(500).send(err.message);
+    if (err instanceof HttpError) {
+      if ((typeof err.data) === 'string') {
+        res.status(err.getCode()).send(err.data);
+      }
+      else {
+        res.status(err.getCode()).json(err.data);
       }
       return;
     }
     else if (err instanceof Error) {
       res.status(500).send(err.message);
+      return;
     }
     else {
       res.status(500).send('Error');
+      return;
     }
   }
 

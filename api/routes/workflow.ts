@@ -1,8 +1,7 @@
 import type z from 'zod';
-import express from 'express';
 import { getActionManifestRequest } from '../../shared/transport-types';
 import { addRoute } from './router';
-import { HandledError } from '../../shared/errors';
+import { HttpError } from '../../shared/errors';
 
 addRoute('workflow-get', async (body, res) => {
   res.json({
@@ -10,17 +9,16 @@ addRoute('workflow-get', async (body, res) => {
   });
 });
 
-function checkParse<T>(parsed: z.ZodSafeParseResult<T>, res: express.Response) {
+function checkParse<T>(parsed: z.ZodSafeParseResult<T>) {
   if (parsed.success === false) {
-    res.status(400).json(parsed.error.issues);
-    throw new HandledError();
+    throw HttpError.badRequest(parsed.error.issues);
   }
 }
 
 addRoute('get-action-manifest', async (body, res) => {
   const parsed = getActionManifestRequest.safeParse(body);
 
-  checkParse(parsed, res);
+  checkParse(parsed);
 
   res.json({
     bob: 'bob',
